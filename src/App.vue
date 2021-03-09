@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto">
-    <table class="table-fixed w-full">
+  <div class="flex items-center justify-center">
+    <table class="table-auto border-collapse w-6/12">
       <thead>
         <tr class="h-14 border-2 border-gray-200 rounded-md bg-gray-200">
           <th class="w-1/4" v-for="column in columns" :key="column">
