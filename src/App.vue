@@ -3,7 +3,7 @@
     <input
       class="py-2 px-4 mt-8 w-6/12 font-semibold rounded-lg shadow-md"
       placeholder="Filter assets..."
-      v-model="searchedAsset"
+      v-model="filter"
     />
     <table class="table-auto border-collapse w-6/12 mb-8 mt-8 shadow-md">
       <thead>
@@ -46,6 +46,7 @@
         Prev
       </button>
       <button
+        v-if="showNextButton"
         class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md"
         @click="pageForwards"
       >
@@ -66,7 +67,7 @@ export default {
       columns: ["Rank", "Name", "Price", "Change (24Hr)"],
       page: 1,
       numberOfAssetsPerPage: 10,
-      searchedAsset: ""
+      filter: ""
     };
   },
   created() {
@@ -80,13 +81,21 @@ export default {
     endIndex() {
       return this.page * this.numberOfAssetsPerPage;
     },
-    fitleredAssets() {
+    filteredAssets() {
       return this.assets.filter(asset =>
-        asset.name.toLowerCase().includes(this.searchedAsset.toLowerCase())
+        asset.name.toLowerCase().includes(this.filter.toLowerCase())
       );
     },
     assetsList() {
-      return this.fitleredAssets.slice(this.startIndex, this.endIndex);
+      return this.filteredAssets.slice(this.startIndex, this.endIndex);
+    },
+    showNextButton() {
+      return this.filteredAssets.length > this.endIndex;
+    }
+  },
+  watch: {
+    filter() {
+      this.page = 1;
     }
   },
   methods: {
