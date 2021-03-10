@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center justify-center">
-    <table class="table-auto border-collapse w-6/12">
+  <div class="flex flex-col items-center justify-center">
+    <table class="table-auto border-collapse w-6/12 mb-8">
       <thead>
         <tr class="h-14 border-2 border-gray-200 rounded-md bg-gray-200">
           <th class="w-1/4" v-for="column in columns" :key="column">
@@ -10,7 +10,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="asset in assets"
+          v-for="asset in assetsList"
           :key="asset.id"
           class="h-14 border-2 border-gray-200 rounded-md"
         >
@@ -32,6 +32,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="flex w-3/12 items-center justify-around">
+      <button
+        class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md"
+        @click="pageBackwards"
+        v-if="page > 1"
+      >
+        Prev
+      </button>
+      <button
+        class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md"
+        @click="pageForwards"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
@@ -43,12 +58,25 @@ export default {
   data() {
     return {
       assets: [],
-      columns: ["Rank", "Name", "Price", "Change (24Hr)"]
+      columns: ["Rank", "Name", "Price", "Change (24Hr)"],
+      page: 1,
+      numberOfAssetsPerPage: 10
     };
   },
   created() {
     this.setAssetsToData();
     this.subscribeToNewPricesByWS();
+  },
+  computed: {
+    startIndex() {
+      return (this.page - 1) * this.numberOfAssetsPerPage;
+    },
+    endIndex() {
+      return this.page * this.numberOfAssetsPerPage;
+    },
+    assetsList() {
+      return this.assets.slice(this.startIndex, this.endIndex);
+    }
   },
   methods: {
     async setAssetsToData() {
@@ -75,6 +103,12 @@ export default {
           asset.priceUsd = newPrice;
         }
       });
+    },
+    pageForwards() {
+      this.page += 1;
+    },
+    pageBackwards() {
+      this.page -= 1;
     }
   }
 };
