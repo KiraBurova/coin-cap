@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col items-center justify-center">
-    <input placeholder="Filter assets..." v-model="searchedAsset" />
-    <table class="table-auto border-collapse w-6/12 mb-8">
+    <input
+      class="py-2 px-4 mt-8 w-6/12 font-semibold rounded-lg shadow-md"
+      placeholder="Filter assets..."
+      v-model="searchedAsset"
+    />
+    <table class="table-auto border-collapse w-6/12 mb-8 mt-8 shadow-md">
       <thead>
         <tr class="h-14 border-2 border-gray-200 rounded-md bg-gray-200">
           <th class="w-1/4" v-for="column in columns" :key="column">
