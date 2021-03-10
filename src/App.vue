@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center">
+    <input placeholder="Filter assets..." v-model="searchedAsset" />
     <table class="table-auto border-collapse w-6/12 mb-8">
       <thead>
         <tr class="h-14 border-2 border-gray-200 rounded-md bg-gray-200">
@@ -60,7 +61,8 @@ export default {
       assets: [],
       columns: ["Rank", "Name", "Price", "Change (24Hr)"],
       page: 1,
-      numberOfAssetsPerPage: 10
+      numberOfAssetsPerPage: 10,
+      searchedAsset: ""
     };
   },
   created() {
@@ -74,8 +76,13 @@ export default {
     endIndex() {
       return this.page * this.numberOfAssetsPerPage;
     },
+    fitleredAssets() {
+      return this.assets.filter(asset =>
+        asset.name.toLowerCase().includes(this.searchedAsset.toLowerCase())
+      );
+    },
     assetsList() {
-      return this.assets.slice(this.startIndex, this.endIndex);
+      return this.fitleredAssets.slice(this.startIndex, this.endIndex);
     }
   },
   methods: {
