@@ -37,30 +37,23 @@
         </tr>
       </tbody>
     </table>
-    <div class="flex w-3/12 items-center justify-around">
-      <button
-        class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md"
-        @click="pageBackwards"
-        v-if="page > 1"
-      >
-        Prev
-      </button>
-      <button
-        v-if="showNextButton"
-        class="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md"
-        @click="pageForwards"
-      >
-        Next
-      </button>
-    </div>
+    <Pagination
+      :page="page"
+      :showNextButton="showNextButton"
+      @page-forwards="pageForwards"
+      @page-backwards="pageBackwards"
+    />
   </div>
 </template>
 
 <script>
 import { getAssests, subscribeToPricesChange } from "./services/api";
 
+import Pagination from "./components/Pagination";
+
 export default {
   name: "App",
+  components: { Pagination },
   data() {
     return {
       assets: [],
