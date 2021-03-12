@@ -14,6 +14,7 @@
         </tr>
       </thead>
       <tbody>
+        <EmptyTablePlaceholder v-if="!assetsList.length" />
         <tr
           v-for="asset in assetsList"
           :key="asset.id"
@@ -50,10 +51,11 @@
 import { getAssests, subscribeToPricesChange } from "./services/api";
 
 import Pagination from "./components/Pagination";
+import EmptyTablePlaceholder from "./components/EmptyTablePlaceholder";
 
 export default {
   name: "App",
-  components: { Pagination },
+  components: { Pagination, EmptyTablePlaceholder },
   data() {
     return {
       assets: [],
